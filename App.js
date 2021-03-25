@@ -13,9 +13,13 @@ export default class extends React.Component {
   }
 
   getWeather=async(latitude, longitude) =>{
-    const {data:{main :{temp}, weather}}=await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
+    //const {data:{main :{temp}, weather}}=
+    //await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
+    const {data:{pm10Value}}=
+    await axios.get(`http://220.69.209.54:9001/air/getAirInfoByGPS?lat=${latitude}&long=${longitude}`);
+    
 
-    this.setState({isLoading:false, condition:weather[0].main, temp});
+    this.setState({isLoading:false, condition:pm10Value});
   }
 
 
@@ -38,8 +42,8 @@ export default class extends React.Component {
   }
 
   render(){
-    const{isLoading, temp, condition}=this.state;
-    return isLoading ?<Loading />:<Weather temp={Math.round(temp)} condition={condition}/>;
+    const{isLoading,condition}=this.state;
+    return isLoading ?<Loading />:<Weather condition={condition}/>;
   }
 }
   
